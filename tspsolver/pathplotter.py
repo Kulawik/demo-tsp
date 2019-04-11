@@ -7,13 +7,14 @@ class PathPlotter:
     """ Path plotting wrapper
     """
 
-    def plot(path: Path):
+    def plot(self, path: Path):
         """Plots path"""
         vertices = path.get_vertices()
         if len(vertices) > 1:
             vertices.append(vertices[0])
-        plt.plot(vertices, style="o-")
+        x, y = zip(*vertices)
+        plt.plot(x, y)
 
-    def show():
+    def show(self):
         """Shows plot"""
         plt.show()

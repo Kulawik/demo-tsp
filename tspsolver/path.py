@@ -28,7 +28,7 @@ class Path:
         """
         with open(filepath) as tsv:
             reader = csv.reader(tsv, delimiter=' ')
-            self._vertices = [(float(x), float(y)) for x, y in reader]
+            self._vertices = [(float(row[0]), float(row[1])) for row in reader]
 
     def get_vertices(self) -> Vertices:
         """Returns vertices list"""
