@@ -34,24 +34,42 @@ class Path:
         """Returns vertices list"""
         return self._vertices
 
-    def get_cycle_length(self) -> float:
+    def permute(self, indices: List[int]):
+        """Permutes the vertices
+
+        Args:
+            indices: list of indices representing permutation
+        """
+        #  TODO ? check for invalid indices length and range
+        self._vertices = [self._vertices[i] for i in indices]
+
+    def get_cycle_length(self, indices: List[int] = None) -> float:
         """Returns cycle length
 
         Calculates length of cycle created by connecting first and last vertex
-        from the vertices.
+        from the vertices. If indices are provided, the length is calculated
+        for the given permutation of vertices.
+
+        Args:
+            indices: list of indices representing permutation
         """
         if len(self._vertices) < 2:
             return 0
-        return sum([Path._distance(self._vertices[i], self._vertices[i + 1])
-                    for i in range(len(self._vertices) - 1)])\
-            + Path._distance(self._vertices[-1], self._vertices[0])
+        if indices is None:
+            indices = range(len(self._vertices))
+        #  TODO ? check for invalid indices length and range
+        return sum([Path._distance(self._vertices[indices[i]],
+                                   self._vertices[indices[i + 1]])
+                    for i in range(len(indices) - 1)])\
+            + Path._distance(self._vertices[indices[-1]],
+                             self._vertices[indices[0]])
 
     def _distance(v0: Vertex, v1: Vertex) -> float:
         """Calculates euclidean distance between points
 
         Args:
-            v0 : Vertex representing first point.
-            v1 : Vertex representing second point.
+            v0: Vertex representing first point.
+            v1: Vertex representing second point.
 
         Returns:
             Euclidean distance between points.
