@@ -11,12 +11,14 @@ class EvolutionarySolver(TSPSolver):
     """
 
     def __init__(self, path: Path,
-                 population_size: int = 300,
-                 cxpb: float = 0.95,
-                 mutpb: float = 0.025,
-                 ngen: int = 100,
-                 tourn_size: int = 6,
-                 indpb: float = 0.025,
+                 population_size: int = 200,
+                 mu: int = 200,
+                 lambda_: int = 600,
+                 cxpb: float = 0.7,
+                 mutpb: float = 0.2,
+                 ngen: int = 500,
+                 tourn_size: int = 4,
+                 indpb: float = 0.05,
                  verbose: bool = False):
         """Inits EvolutionarySolver with path and population size.
 
@@ -33,6 +35,8 @@ class EvolutionarySolver(TSPSolver):
         """
         super(EvolutionarySolver, self).__init__(path)
         self._population_size = population_size
+        self._mu = mu
+        self._lambda = lambda_
         self._cxpb = cxpb
         self._mutpb = mutpb
         self._ngen = ngen
@@ -49,8 +53,8 @@ class EvolutionarySolver(TSPSolver):
         """
         population = self._toolbox.population(n=self._population_size)
         hall_of_fame = tools.HallOfFame(maxsize=1)
-        population, self._log = algorithms.eaSimple(
-            population, self._toolbox,
+        population, self._log = algorithms.eaMuPlusLambda(
+            population, self._toolbox, mu=self._mu, lambda_=self._lambda,
             cxpb=self._cxpb, mutpb=self._mutpb, ngen=self._ngen,
             stats=self._stats, halloffame=hall_of_fame, verbose=self._verbose)
         indices = hall_of_fame[0]
@@ -81,7 +85,7 @@ class EvolutionarySolver(TSPSolver):
         def evaluate(individual):
             return (self.path.get_cycle_length(individual),)
         self._toolbox.register("evaluate", evaluate)
-        self._toolbox.register("mate", tools.cxPartialyMatched)
+        self._toolbox.register("mate", tools.cxOrdered)
         self._toolbox.register("mutate", tools.mutShuffleIndexes,
                                indpb=self._indpb)
         self._toolbox.register("select", tools.selTournament,
