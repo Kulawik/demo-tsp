@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, TextIO
 from math import sqrt
 import csv
 import random
@@ -21,19 +21,22 @@ class Path:
         """
         self._vertices = vertices
 
-    def load(self, filepath: str):
+    def load(self, input_file: TextIO):
         """Loads vertices from file
 
         Args:
-            filepath: file path string
+            input_file: input_file
         """
-        with open(filepath) as tsv:
-            reader = csv.reader(tsv, delimiter=' ')
-            self._vertices = [(float(row[0]), float(row[1])) for row in reader]
+        reader = csv.reader(input_file, delimiter=' ')
+        self._vertices = [(float(row[0]), float(row[1])) for row in reader]
 
     def get_vertices(self) -> Vertices:
         """Returns vertices list"""
         return self._vertices
+
+    def get_number_of_vertices(self) -> int:
+        """Return number of vertices"""
+        return len(self._vertices)
 
     def permute(self, indices: List[int]):
         """Permutes the vertices

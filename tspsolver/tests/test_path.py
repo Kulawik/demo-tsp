@@ -9,6 +9,17 @@ def testPathGetVertices():
     assert p.get_vertices() == V
 
 
+def testPathGetNumberOfVertices_empty():
+    p = Path([])
+    assert p.get_number_of_vertices() == 0
+
+
+def testPathGetNumberOfVertices_not_empty():
+    V = [(i, i) for i in range(13)]
+    p = Path(V)
+    assert p.get_number_of_vertices() == 13
+
+
 def testPathDistance():
     assert Path._distance((1, 1), (1, 2)) == 1
     assert Path._distance((1, 2), (1, 1)) == 1
@@ -51,7 +62,8 @@ def testPathLoad(tmp_path):
     file_path = tmp_path / "test_dataset.tsv"
     file_path.write_text("1.0 0.0\n1.1 0.1\n3.0 3.1")
     p = Path()
-    p.load(str(file_path))
+    with file_path.open() as f:
+        p.load(f)
     assert p.get_vertices() == [(1.0, 0.0), (1.1, 0.1), (3.0, 3.1)]
 
 
