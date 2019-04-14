@@ -1,6 +1,7 @@
 from typing import List, Tuple
 from math import sqrt
 import csv
+import random
 
 Vertex = Tuple[float, float]
 Vertices = List[Vertex]
@@ -51,7 +52,7 @@ class Path:
         for the given permutation of vertices.
 
         Args:
-            indices: list of indices representing permutation
+            indices: list of indices representing permutation.
         """
         if len(self._vertices) < 2:
             return 0
@@ -75,3 +76,21 @@ class Path:
             Euclidean distance between points.
         """
         return sqrt((v1[0] - v0[0])**2 + (v1[1] - v0[1])**2)
+
+
+class RandomPath(Path):
+    """Random path class"""
+    def __init__(self, number_of_vertices: int,
+                 limits: Tuple[float, float] = (0, 1)):
+        """Inits RandomPath with random vertices
+
+        Args:
+            number_of_vertices: specifies number of vertices
+                                in the generated path.
+            limits: tuple (min, max) specifying range of each of coordinates,
+                    defaults to (0, 1).
+        """
+        def generator():
+            return random.uniform(*limits)
+        self._vertices = [(generator(), generator())
+                          for _ in range(number_of_vertices)]
