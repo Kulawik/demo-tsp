@@ -10,7 +10,7 @@ or
 <pre><code>make test</code></pre>
 
 ## Running demo with random vertices:
-<pre><code>pipenv run demo.py </code></pre>
+<pre><code>pipenv run python demo.py </code></pre>
 or with specified input file:
 <pre><code>pipenv run python demo.py -f ./data/dataset.tsv</code></pre>
 
