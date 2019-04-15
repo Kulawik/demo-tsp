@@ -42,9 +42,9 @@ class Path:
         """Permutes the vertices
 
         Args:
-            indices: list of indices representing permutation
+            indices: list of indices representing permutation,
+                     validity of indices is not checked
         """
-        #  TODO ? check for invalid indices length and range
         self._vertices = [self._vertices[i] for i in indices]
 
     def get_cycle_length(self, indices: List[int] = None) -> float:
@@ -56,12 +56,12 @@ class Path:
 
         Args:
             indices: list of indices representing permutation.
+                     validity of indices is not checked
         """
         if len(self._vertices) < 2:
             return 0
         if indices is None:
             indices = range(len(self._vertices))
-        #  TODO ? check for invalid indices length and range
         return sum([Path._distance(self._vertices[indices[i]],
                                    self._vertices[indices[i + 1]])
                     for i in range(len(indices) - 1)])\
